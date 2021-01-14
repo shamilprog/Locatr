@@ -36,6 +36,9 @@ public class LocatrFragment extends SupportMapFragment {
             Manifest.permission.ACCESS_COARSE_LOCATION,
     };
     private static final int REQUEST_LOCATION_PERMISSIONS = 0;
+    private Bitmap mMapImage;
+    private GalleryItem mMapItem;
+    private Location mCurrentLocation;
 
     private GoogleApiClient mClient;
 
@@ -142,9 +145,11 @@ public class LocatrFragment extends SupportMapFragment {
     private class SearchTask extends AsyncTask<Location, Void, Void> {
         private GalleryItem mGalleryItem;
         private Bitmap mBitmap;
+        private Location mLocation;
 
         @Override
         protected Void doInBackground(Location... locations) {
+            mLocation = locations[0];
             FlickrFetchr fetchr = new FlickrFetchr();
             List<GalleryItem> items = fetchr.searchPhotos(locations[0]);
 
@@ -166,7 +171,9 @@ public class LocatrFragment extends SupportMapFragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
+            mMapImage = mBitmap;
+            mMapItem = mGalleryItem;
+            mCurrentLocation = mLocation;
         }
     }
 }
